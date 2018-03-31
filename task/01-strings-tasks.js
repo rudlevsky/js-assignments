@@ -74,7 +74,6 @@ function extractNameFromTemplate(value) {
     return value[1] + ' ' + value[2];
 }
 
-
 /**
  * Возвращает первый символ полученной строки
  *
