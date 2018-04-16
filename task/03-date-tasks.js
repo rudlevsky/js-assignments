@@ -80,48 +80,23 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-	
-  /*  
-    var perem = endDate.getTime() - startDate.getDate();
-
-	var hour = 0;
-	while ((perem-3600000) >= 0) 
-	{
-		perem -= 3600000;
-		hour++;
-	}
-	
-	var minutes = 0;
-	while ((perem-60000) >= 0) 
-	{
-		perem -= 60000;
-		minutes++;
-	}
-	
-	var seconds = 0;
-	while ((perem-1000) >= 0) 
-	{
-		perem -= 1000;
-		seconds++;
-	}
-	var milis = perem;
-	perem = '';
-	
-    perem += (hour < 10 ? '0' + hour + ':' : hour + ':');
-    perem += (minutes <10 ? '0' + minutes + ':' : minutes + ':');
-    perem += (seconds <10 ? '0' + seconds + ':' : seconds + ':');
-    if (milis < 10)
-        perem+='00' + milis;
-    else if (milis < 100)
-        perem += '0' + milis;
-    else
-        perem += milis;
-
-    //var perem = hour + ':' + minutes + ':' + seconds + ':' + milis;
-    return perem;*/
-	    throw new Error('Not implemented');
-	
-  
+    var temp = endDate - startDate;
+    var hour = Math.trunc(temp / (1000*60*60));
+    temp -= hour*(1000*60*60);
+    var minute = Math.trunc(temp / (1000*60));
+    temp -= minute*(1000*60);
+    var second = Math.trunc(temp / (1000));
+    temp -= second*1000;
+    var millisecond = temp;
+    var date = new Date();
+    date.setHours(hour);
+    date.setMinutes(minute);
+    date.setSeconds(second);
+    date.setMilliseconds(millisecond);
+    var res = date.toString().split(' ');
+    var millisec = date.toISOString().split('.');
+    millisec[1] = millisec[1].replace('Z','');
+    return res[4] + `.${millisec[1]}`; 
 }
 
 
@@ -139,7 +114,12 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
+    var hour = date.getUTCHours();
+    var minute = date.getUTCMinutes();
+    var res =  Math.abs((0.5)*(60*hour - 11*minute));
+    while (res > 180)
+        res = Math.abs(360 - res);
+    return res*Math.PI/180;ы
 }
 
 
