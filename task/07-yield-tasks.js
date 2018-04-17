@@ -148,17 +148,15 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-	throw new Error('Not implemented');
-    /*const queue = [];
-    queue.push(root);
-    while (queue.length) {
-        let cur = queue.shift();
-        yield cur;
-        if (cur.children) {
-            cur.children.forEach(x =>
-                queue.push(x));
+    var nodes = [root];
+    for (var i = 0; i < nodes.length; i++) {
+        yield nodes[i];
+        if ('children' in nodes[i]) {
+            for (var j = 0; j < nodes[i].children.length; j++) {
+                nodes.push(nodes[i].children[j]);
+            }
         }
-    }*/
+    }
 }
 
 
