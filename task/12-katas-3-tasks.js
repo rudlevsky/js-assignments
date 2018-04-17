@@ -28,7 +28,69 @@
  *   'NULL'      => false 
  */
 function findStringInSnakingPuzzle(puzzle, searchStr) {
-    throw new Error('Not implemented');
+    class RouteMap {
+        constructor() {
+            this._route = {};
+            this._width = puzzle[0].length;
+            this._height = puzzle.length;
+        }
+
+        _key(x, y) {
+            return `${x},${y}`;
+        }
+
+        markAvailable(x, y) {
+            this._route[this._key(x, y)] = false;
+        }
+
+        markVisited(x, y) {
+            this._route[this._key(x, y)] = true;
+        }
+
+        isAvailable(x, y) {
+            return x >= 0
+                && x < this._width
+                && y >= 0
+                && y < this._height
+                && !this._route[this._key(x, y)];
+        }
+    }
+
+    function* getSiblings(x, y) {
+        yield [x - 1, y];
+        yield [x + 1, y];
+        yield [x, y - 1];
+        yield [x, y + 1];
+    }
+
+    function checkRoute(x, y, search, route) {
+        if (!route.isAvailable(x, y) || puzzle[y][x] !== search[0]) {
+            return false;
+        }
+        if (search.length === 1) {
+            return true;
+        }
+        route.markVisited(x, y);
+        const nextSearch = search.slice(1);
+
+        for (let [sx, sy] of getSiblings(x, y)) {
+            if (checkRoute(sx, sy, nextSearch, route)) {
+                return true;
+            }
+        }
+
+        route.markAvailable(x, y);
+        return false;
+    }
+
+    for (let y = 0; y < puzzle.length; ++y) {
+        for (let x = 0; x < puzzle[0].length; ++x) {
+            if (checkRoute(x, y, searchStr, new RouteMap())) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 
@@ -45,7 +107,27 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  *    'abc' => 'abc','acb','bac','bca','cab','cba'
  */
 function* getPermutations(chars) {
-    throw new Error('Not implemented');
+    if (chars.length < 2){
+        yield chars;
+        return;
+    }
+
+    var inputArray = chars;
+    inputArray = inputArray.split('');
+    var result = inputArray.reduce(function permute(res, item, key, arr) {
+        return res.concat(arr.length > 1 && arr.slice(0, key).concat(arr.slice(key + 1)).reduce(permute, []).map(function(perm) { return [item].concat(perm); }) || item);
+    }, []);
+
+
+    for (var i = 0; i < result.length; i++){
+        var temp = '';
+        for (var j=0; j < result[i].length; j++)
+            temp = temp + String(result[i][j]);
+        result[i] = temp;
+    }
+
+    for (var i = 0; i < result.length; i++)
+        yield result[i];
 }
 
 
@@ -65,7 +147,11 @@ function* getPermutations(chars) {
  *    [ 1, 6, 5, 10, 8, 7 ] => 18  (купить по 1,6,5 и затем продать все по 10)
  */
 function getMostProfitFromStockQuotes(quotes) {
-    throw new Error('Not implemented');
+    if (!quotes.length) return 0;
+    let maxNum = Math.max.apply(null, quotes);
+    let indMax = quotes.lastIndexOf(maxNum);
+    return quotes.slice(0, indMax).reduce((prev, curr) => prev += maxNum - curr, 0) +
+        getMostProfitFromStockQuotes(quotes.slice(indMax + 1));
 }
 
 
@@ -85,19 +171,28 @@ function getMostProfitFromStockQuotes(quotes) {
  */
 function UrlShortener() {
     this.urlAllowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
-                           "abcdefghijklmnopqrstuvwxyz"+
-                           "0123456789-_.~!*'();:@&=+$,/?#[]";
+        "abcdefghijklmnopqrstuvwxyz"+
+        "0123456789-_.~!*'();:@&=+$,/?#[]";
 }
 
 UrlShortener.prototype = {
 
     encode: function(url) {
-        throw new Error('Not implemented');
+        var res = '';
+        for (let i = 0; i * 2 < url.length; i++) {
+            res += String.fromCodePoint(url.codePointAt(2 * i) * 256 + (url.codePointAt(2 * i + 1) || 0))
+        }
+        return res;
     },
-    
+
     decode: function(code) {
-        throw new Error('Not implemented');
-    } 
+        var res = '';
+        for (let i = 0; i < code.length; i++) {
+            let c = code.codePointAt(i);
+            res += String.fromCodePoint(c / 256 | 0) + (c % 256 ? String.fromCodePoint(c % 256) : '');
+        }
+        return res;
+    }
 }
 
 

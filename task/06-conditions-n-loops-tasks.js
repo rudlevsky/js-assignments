@@ -597,13 +597,16 @@ function getMatrixProduct(m1, m2) {
  *
  */
 function evaluateTicTacToePosition(position) {
-	throw new Error('Not implemented');
-	/*let perem;
+	let perem;
 	for (let i = 0; i < 2; i++) 
 	{
 		switch(i) {
-			case 0:	perem = 'X';
-			case 1: perem = '0';
+			case 0:	
+				perem = 'X';
+				break;
+			case 1: 
+				perem = '0';
+				break;
 		}
 
 		if ((perem == position[0][0]) && (perem == position[1][1]) && (perem == position[2][2])) return perem;
@@ -615,21 +618,7 @@ function evaluateTicTacToePosition(position) {
 		if ((perem == position[0][1]) && (perem == position[1][1]) && (perem == position[2][1])) return perem;
 		if ((perem == position[0][2]) && (perem == position[1][2]) && (perem == position[2][2])) return perem;
 	}
-    return undefined;*/
-   
-   /*
-    let el = position[1][1];
-    if (el === position[0][0] && el === position[2][2]) return el;
-    if (el === position[0][2] && el === position[2][0]) return el;
-    if (el === position[0][1] && el === position[2][1]) return el;
-    if (el === position[1][0] && el === position[1][2]) return el;
-    el = position[0][0];
-    if (el === position[0][1] && el === position[0][2]) return el;
-    if (el === position[1][0] && el === position[2][0]) return el;
-    el = position[2][2];
-    if (el === position[2][0] && el === position[2][1]) return el;
-    if (el === position[0][2] && el === position[1][2]) return el;
-    return undefined;*/
+    return undefined;
 }
 
 
